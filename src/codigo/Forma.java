@@ -35,7 +35,7 @@ public class Forma extends Polygon {
     public void dibujate(Graphics2D g2, int _posY, int _posX) {
         //redibujas la forma
 
-        calculaVertices(y - _posY, x - _posX);
+        calculaVertices(y - _posY, x - _posX); // si lo divido modifico la velocidad del giro
         g2.setColor(color);
         if (relleno) {
             g2.fill(this);
@@ -45,10 +45,10 @@ public class Forma extends Polygon {
     }
 
     //recalcula la posción de los vértices en un poligono regular 
-    private void calculaVertices(int _radio, double _giro) {
+    public void calculaVertices(int _radio, double _giro) {
         for (int i = 0; i < npoints; i++) {
-            this.xpoints[i] = (int) (x + _radio * Math.cos((2 * Math.PI * i + _giro) / npoints));
-            this.ypoints[i] = (int) (y + _radio * Math.sin((2 * Math.PI * i + _giro) / npoints));
+            this.xpoints[i] = (int) (x + _radio * Math.cos((2 * Math.PI * i + _giro) / npoints)); //mejor modificar la velocidad en giro
+            this.ypoints[i] = (int) (y + _radio * Math.sin((2 * Math.PI * i + _giro) / npoints)); // ----------------
         }
 
     }
