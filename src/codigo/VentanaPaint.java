@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JToggleButton;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -43,6 +44,8 @@ public class VentanaPaint extends javax.swing.JFrame {
         jLabel1.setBackground(Color.ORANGE);
         inicializaBuffers();
         jDialog1.setSize(640, 470);
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("JPG Y PNG sólo", "jpg", "png");
+        jFileChooser1.setFileFilter(filtro);
     }
 
     private void inicializaBuffers() {
@@ -73,14 +76,14 @@ public class VentanaPaint extends javax.swing.JFrame {
         g2.drawImage(buffer, 0, 0, null);
 
     }
-    
-     private void deSelecciona(){
+
+    private void deSelecciona() {
         Component[] components = (Component[]) getContentPane().getComponents();
         for (Component comp : components) {
             if (comp instanceof JToggleButton) {
-                ((JToggleButton)comp).setSelected(false);
+                ((JToggleButton) comp).setSelected(false);
             }
-        } 
+        }
     }
 
     /**
@@ -109,6 +112,7 @@ public class VentanaPaint extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         jButton1.setText("Cancelar");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -261,6 +265,14 @@ public class VentanaPaint extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
+        jMenuItem2.setText("Cargar");
+        jMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItem2MousePressed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
@@ -318,10 +330,12 @@ public class VentanaPaint extends javax.swing.JFrame {
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
         //inicializo la ellipse que usaré para dibujar el buffer
         switch (formaSeleccionada) {
-            case 100: miForma = new Circulo(evt.getX(),evt.getY(),colorSeleccionado, jCheckBox1.isSelected());
-            break;
-            case 4: miForma = new Cuadrado(evt.getX(),evt.getY(),colorSeleccionado, jCheckBox1.isSelected());
-            break;
+            case 100:
+                miForma = new Circulo(evt.getX(), evt.getY(), colorSeleccionado, jCheckBox1.isSelected());
+                break;
+            case 4:
+                miForma = new Cuadrado(evt.getX(), evt.getY(), colorSeleccionado, jCheckBox1.isSelected());
+                break;
             case 3:
                 miForma = new Triangulo(evt.getX(), evt.getY(), colorSeleccionado, jCheckBox1.isSelected());
                 break;
@@ -331,7 +345,7 @@ public class VentanaPaint extends javax.swing.JFrame {
             case 24:
                 miForma = new Estrella(evt.getX(), evt.getY(), colorSeleccionado, jCheckBox1.isSelected());
                 break;
-                
+
         }
 
 
@@ -375,7 +389,7 @@ public class VentanaPaint extends javax.swing.JFrame {
     private void jToggleButton3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton3MousePressed
         //elige triangulos
         formaSeleccionada = 3;
-       deSelecciona();
+        deSelecciona();
     }//GEN-LAST:event_jToggleButton3MousePressed
 
     private void jToggleButton4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton4MousePressed
@@ -394,19 +408,21 @@ public class VentanaPaint extends javax.swing.JFrame {
     }//GEN-LAST:event_jFileChooser1ActionPerformed
 
     private void jMenuItem1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MousePressed
-        int seleccion = jFileChooser1.showSaveDialog(this);
         
-        if (seleccion == JFileChooser.APPROVE_OPTION){
+        
+        
+        int seleccion = jFileChooser1.showSaveDialog(this);
+
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
             //si llego aqui es que el usuario ha pulsado en "guardar" cuando ha salido
             //el menú de jFileChooser
             File fichero = jFileChooser1.getSelectedFile();
             String nombre = fichero.getName();
-            String extension = nombre.substring(nombre.lastIndexOf('.')+1);
-            if (extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png")){
-                try{
+            String extension = nombre.substring(nombre.lastIndexOf('.') + 1);
+            if (extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png")) {
+                try {
                     ImageIO.write(buffer, extension, fichero);
-                }
-                catch(IOException e){
+                } catch (IOException e) {
                 }
             }
         }
@@ -414,10 +430,31 @@ public class VentanaPaint extends javax.swing.JFrame {
 
     private void jMenu1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jMenu1StateChanged
         JMenu menu = (JMenu) evt.getSource();
-        if (!menu.isSelected()){
+        if (!menu.isSelected()) {
             repaint();
         }
     }//GEN-LAST:event_jMenu1StateChanged
+
+    private void jMenuItem2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MousePressed
+        int seleccion = jFileChooser1.showOpenDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File fichero = jFileChooser1.getSelectedFile();
+            String nombre = fichero.getName();
+            String extension = nombre.substring(nombre.lastIndexOf('.') + 1);
+            BufferedImage imagen = null;
+            if (extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png")) {
+                try {
+                    imagen = ImageIO.read(fichero);
+                    bufferGraphics.drawImage(imagen, 0, 0, null);
+                    buffer2Graphics.drawImage(imagen, 0, 0, null);
+                    repaint();
+                } 
+                catch (IOException e) {
+                }
+            }
+        }
+
+    }//GEN-LAST:event_jMenuItem2MousePressed
 
     /**
      * @param args the command line arguments
@@ -466,6 +503,7 @@ public class VentanaPaint extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton2;

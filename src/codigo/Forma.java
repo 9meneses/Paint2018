@@ -47,8 +47,8 @@ public class Forma extends Polygon {
     //recalcula la posción de los vértices en un poligono regular 
     public void calculaVertices(int _radio, double _giro) {
         for (int i = 0; i < npoints; i++) {
-            this.xpoints[i] = (int) (x + _radio * Math.cos((2 * Math.PI * i + _giro) / npoints)); //mejor modificar la velocidad en giro
-            this.ypoints[i] = (int) (y + _radio * Math.sin((2 * Math.PI * i + _giro) / npoints)); // ----------------
+            this.xpoints[i] = (int) (x + _radio * Math.cos((2 * Math.PI * i + _giro/20) / npoints)); //mejor modificar la velocidad en giro
+            this.ypoints[i] = (int) (y + _radio * Math.sin((2 * Math.PI * i + _giro/20) / npoints)); // ----------------
         }
 
     }
