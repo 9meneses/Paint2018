@@ -4,6 +4,7 @@ el programa
  */
 package codigo;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -16,6 +17,7 @@ public class Forma extends Polygon {
 
     public Color color = null;
     public boolean relleno = false;
+    public boolean discontinuo = false;
 
     //coordenadas del centro de la forma 
     public int x = 0;
@@ -32,7 +34,7 @@ public class Forma extends Polygon {
         relleno = _relleno;
     }
 
-    public void dibujate(Graphics2D g2, int _posY, int _posX) {
+    public void dibujate(Graphics2D g2, int _posY, int _posX, BasicStroke _trazo) {
         //redibujas la forma
 
         calculaVertices(y - _posY, x - _posX); // si lo divido modifico la velocidad del giro
@@ -40,6 +42,7 @@ public class Forma extends Polygon {
         if (relleno) {
             g2.fill(this);
         } else {
+            g2.setStroke(_trazo);
             g2.draw(this);
         }
     }
