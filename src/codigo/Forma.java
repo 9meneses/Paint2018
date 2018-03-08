@@ -4,6 +4,8 @@ el programa
  */
 package codigo;
 
+
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -32,6 +34,7 @@ public class Forma extends Polygon {
 
         color = _color;
         relleno = _relleno;
+        
     }
 
     public void dibujate(Graphics2D g2, int _posY, int _posX, BasicStroke _trazo) {
@@ -55,5 +58,7 @@ public class Forma extends Polygon {
         }
 
     }
+
+ 
 
 }
